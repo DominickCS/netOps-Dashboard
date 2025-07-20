@@ -16,7 +16,7 @@ function App() {
 
   async function getClient() {
     // FETCH Client Company and Contact Information
-    await fetch(fetchClientURL);
+    await fetch(fetchClientURL) ({
       method: "GET",
       headers: {
         'Authorization': `Basic ${base64creds}`,
@@ -28,7 +28,7 @@ function App() {
     .catch(error => console.error(error));
     
     // FETCH Client Custom fields
-    await fetch(fetchClientMetadataURL);
+    await fetch(fetchClientMetadataURL) ({
       method: "GET",
       headers: {
         'Authorization': `Basic ${base64creds}`,
