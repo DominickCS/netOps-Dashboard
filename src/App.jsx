@@ -46,13 +46,16 @@ function App() {
   }
 
  // async function updatePPDUReading(pduReading) {
- //    await fetch(, {
+ //    await fetch(`https://cors-anywhere.herokuapp.com/https://cp.gipnetworks.com/api/2.0/?method=uber.metadata_field_update&client_id=${id}&metaconf_id=326`, {
  //     method: "POST",
  //      headers: {
  //        'Authorization': `Basic ${base64creds}`,
  //        "Content-Type": "application/json",
- //      }
- //    }
+ //      },
+ //      "body": JSON.stringify({key : pduReading}),
+ //    })
+ //    .then(response => response.json())
+ //    .then(json => console.log(json))
  //  }
 
   function supplyClient(isLoaded) {
@@ -73,13 +76,11 @@ function App() {
           <div className="pduReadingContainer">
           <p>Primary PDU Amp Reading:</p>
           <input type="number" min="0" max="25" placeholder={metaData.data[326].value} onChange={(reading) => setPPDUReading(reading.target.value)}/>
-          {/* <a href={updatePPDUReading()} */}
-          <button>Submit PDU Reading</button>
+          {/* <button onClick={() => {updatePPDUReading(ppduReading)}}>Submit PDU Reading</button> */}
           </div>
           <div className="pduReadingContainer">
           <p>Secondary PDU Amp Reading:</p>
            <input type="number" min="0" max="25" placeholder={metaData.data[327].value} onChange={(reading) => setSPDUReading(reading.target.value)}/>
-          {/* <a href={updatePPDUReading()} */}
           <button>Submit PDU Reading</button>
           </div>
       </div>
