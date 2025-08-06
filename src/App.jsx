@@ -12,10 +12,10 @@ function App() {
   const [spduReading, setSPDUReading] = useState(null);
   const username = import.meta.env.VITE_username;
   const password = import.meta.env.VITE_password;
-  const fetchClientURL = `https://cors-anywhere.herokuapp.com/https://cp.gipnetworks.com/api/2.0/?method=client.get&client_id=${id}`;
-  const fetchClientMetadataURL = `https://cors-anywhere.herokuapp.com/https://cp.gipnetworks.com/api/2.0/?method=client.metadata_get&client_id=${id}`;
+  const fetchClientURL = `/api/?method=client.get&client_id=${id}`;
+  const fetchClientMetadataURL = `/api/?method=client.metadata_get&client_id=${id}`;
   const base64creds = btoa(`${username}:${password}`);
-  
+
 
   async function getClient() {
     // FETCH Client Company and Contact Information
@@ -26,10 +26,10 @@ function App() {
         "Content-Type": "application/json",
       }
     })
-    .then(response => response.json())
-    .then(json => setData(json))
-    .catch(error => console.error(error));
-    
+      .then(response => response.json())
+      .then(json => setData(json))
+      .catch(error => console.error(error));
+
     // FETCH Client Custom fields
     await fetch(fetchClientMetadataURL, {
       method: "GET",
@@ -38,56 +38,56 @@ function App() {
         "Content-Type": "application/json",
       }
     })
-    .then(response => response.json())
-    .then(json => setMetaData(json))
-    .then(console.log(metaData))
-    .catch(error => console.error(error))
-    .finally(() => setIsLoaded(true))
+      .then(response => response.json())
+      .then(json => setMetaData(json))
+      .then(console.log(metaData))
+      .catch(error => console.error(error))
+      .finally(() => setIsLoaded(true))
   }
 
- // async function updatePPDUReading(pduReading) {
- //    await fetch(`https://cors-anywhere.herokuapp.com/https://cp.gipnetworks.com/api/2.0/?method=uber.metadata_field_update&client_id=${id}&metaconf_id=326`, {
- //     method: "POST",
- //      headers: {
- //        'Authorization': `Basic ${base64creds}`,
- //        "Content-Type": "application/json",
- //      },
- //      "body": JSON.stringify({key : pduReading}),
- //    })
- //    .then(response => response.json())
- //    .then(json => console.log(json))
- //  }
+  // async function updatePPDUReading(pduReading) {
+  //    await fetch(`https://cors-anywhere.herokuapp.com/https://cp.gipnetworks.com/api/2.0/?method=uber.metadata_field_update&client_id=${id}&metaconf_id=326`, {
+  //     method: "POST",
+  //      headers: {
+  //        'Authorization': `Basic ${base64creds}`,
+  //        "Content-Type": "application/json",
+  //      },
+  //      "body": JSON.stringify({key : pduReading}),
+  //    })
+  //    .then(response => response.json())
+  //    .then(json => console.log(json))
+  //  }
 
   function supplyClient(isLoaded) {
     if (isLoaded) {
       return (
-      <div>
+        <div>
           <h1>{data.data.company}</h1>
-          <hr/>
+          <hr />
           <h2>Company Information</h2>
           <p>Address: {data.data.address}</p>
           <p>City: {data.data.city} {data.data.state}, {data.data.zip}</p>
           <p>Contact: {data.data.full_name}</p>
           <p>Email: {data.data.email}</p>
-          <br/>
+          <br />
           <h2>Client Infrastructure</h2>
           <p>Client Account Status: {metaData.data[225].value}</p>
           {/* <p>Client Account Status: {metaData.data[225].client_access == "0" ? <span>OK</span> : metaData.data[271].client_access == "0" ? <span>OK</span> : <span>Suspended</span>}</p> */}
           <div className="pduReadingContainer">
-          <p>Primary PDU Amp Reading:</p>
-          <input type="number" min="0" max="25" placeholder={metaData.data[326].value} onChange={(reading) => setPPDUReading(reading.target.value)}/>
-          {/* <button onClick={() => {updatePPDUReading(ppduReading)}}>Submit PDU Reading</button> */}
+            <p>Primary PDU Amp Reading:</p>
+            <input type="number" min="0" max="25" placeholder={metaData.data[326].value} onChange={(reading) => setPPDUReading(reading.target.value)} />
+            {/* <button onClick={() => {updatePPDUReading(ppduReading)}}>Submit PDU Reading</button> */}
           </div>
           <div className="pduReadingContainer">
-          <p>Secondary PDU Amp Reading:</p>
-           <input type="number" min="0" max="25" placeholder={metaData.data[327].value} onChange={(reading) => setSPDUReading(reading.target.value)}/>
-          <button>Submit PDU Reading</button>
+            <p>Secondary PDU Amp Reading:</p>
+            <input type="number" min="0" max="25" placeholder={metaData.data[327].value} onChange={(reading) => setSPDUReading(reading.target.value)} />
+            <button>Submit PDU Reading</button>
           </div>
-      </div>
+        </div>
       )
     }
   }
-// TODO : Try catch for returning api call if  metadata.data [x] exists otherwise default to error
+  // TODO : Try catch for returning api call if  metadata.data [x] exists otherwise default to error
 
   return (
     <>
@@ -102,13 +102,14 @@ function App() {
           type="submit"
           value={"Search"}
           onClick={() => {
-          getClient();
+            getClient();
           }
-          }/>
-        </div>
-        <div>
+          } />
+      </div>
+      <div>
         {supplyClient(isLoaded)}
-        </div>
+      </div>
     </>
-  )}
+  )
+}
 export default App
